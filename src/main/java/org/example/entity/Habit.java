@@ -2,13 +2,13 @@ package org.example.entity;
 import java.time.LocalDate;
 
 public class Habit {
-    private String id;
+    private Long id;
     private String title;
     private String description;
     private String frequency;
     private LocalDate createdAt;
 
-    public Habit(String id, String title, String description, String frequency) {
+    public Habit(Long id, String title, String description, String frequency) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -16,7 +16,7 @@ public class Habit {
         this.createdAt = LocalDate.now();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -36,7 +36,7 @@ public class Habit {
         return createdAt;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
