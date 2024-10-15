@@ -17,7 +17,7 @@ public class HabitService {
         System.out.println("Привычка добавлена успешно.");
     }
 
-    public void editHabit(String habitId, String newTitle, String newDescription, String newFrequency) {
+    public void editHabit(Long habitId, String newTitle, String newDescription, String newFrequency) {
         Habit habit = currentUser.findHabitById(habitId);
         if (habit != null) {
             if (!newTitle.isEmpty()) habit.setTitle(newTitle);
@@ -29,7 +29,7 @@ public class HabitService {
         }
     }
 
-    public void deleteHabit(String habitId) {
+    public void deleteHabit(Long habitId) {
         currentUser.removeHabit(habitId);
         System.out.println("Привычка удалена.");
     }

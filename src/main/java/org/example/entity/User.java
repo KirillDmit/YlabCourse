@@ -26,11 +26,11 @@ public class User {
         habits.add(habit);
     }
 
-    public void removeHabit(String habitId) {
+    public void removeHabit(Long habitId) {
         habits.removeIf(habit -> habit.getId().equals(habitId));
     }
 
-    public Habit findHabitById(String habitId) {
+    public Habit findHabitById(Long habitId) {
         for (Habit habit : habits) {
             if (habit.getId().equals(habitId)) {
                 return habit;
