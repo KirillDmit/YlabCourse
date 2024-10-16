@@ -71,6 +71,15 @@ public class HabitService {
         }
     }
 
+    public void sendHabitReminders() {
+        LocalDate today = LocalDate.now();
+        for (Habit habit : currentUser.getHabits()) {
+            if (!habit.isCompletedOn(today)) {
+                System.out.println("Напоминание: Не забудьте выполнить привычку '" + habit.getTitle() + "' сегодня.");
+            }
+        }
+    }
+
     private Long generateHabitId() {
         return System.currentTimeMillis();
     }
