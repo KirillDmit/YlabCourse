@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.entity.Habit;
 import org.example.entity.User;
+import java.time.LocalDate;
 
 public class HabitService {
     private User currentUser;
@@ -42,6 +43,16 @@ public class HabitService {
             for (Habit habit : currentUser.getHabits()) {
                 System.out.println("ID: " + habit.getId() + ", Название: " + habit.getTitle() + ", Частота: " + habit.getFrequency());
             }
+        }
+    }
+
+    public void markHabitAsCompleted(Long habitId, LocalDate date) {
+        Habit habit = currentUser.findHabitById(habitId);
+        if (habit != null) {
+            habit.markAsCompleted(date);
+            System.out.println("Привычка отмечена как выполненная на " + date);
+        } else {
+            System.out.println("Привычка не найдена.");
         }
     }
 

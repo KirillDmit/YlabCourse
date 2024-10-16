@@ -1,5 +1,8 @@
 package org.example.entity;
+
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Habit {
     private Long id;
@@ -7,6 +10,7 @@ public class Habit {
     private String description;
     private String frequency;
     private LocalDate createdAt;
+    private Set<LocalDate> completionDates;
 
     public Habit(Long id, String title, String description, String frequency) {
         this.id = id;
@@ -14,6 +18,19 @@ public class Habit {
         this.description = description;
         this.frequency = frequency;
         this.createdAt = LocalDate.now();
+        this.completionDates = new HashSet<>();
+    }
+
+    public void markAsCompleted(LocalDate date) {
+        completionDates.add(date);
+    }
+
+    public boolean isCompletedOn(LocalDate date) {
+        return completionDates.contains(date);
+    }
+
+    public Set<LocalDate> getCompletionDates() {
+        return completionDates;
     }
 
     public Long getId() {

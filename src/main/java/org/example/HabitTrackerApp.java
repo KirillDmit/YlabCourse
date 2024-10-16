@@ -1,9 +1,11 @@
 package org.example;
+
 import org.example.entity.User;
 import org.example.repository.UserStorage;
 import org.example.service.AuthService;
 import org.example.service.HabitService;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class HabitTrackerApp {
@@ -40,7 +42,8 @@ public class HabitTrackerApp {
                 System.out.println("2. Редактировать привычку");
                 System.out.println("3. Удалить привычку");
                 System.out.println("4. Просмотреть привычки");
-                System.out.println("5. Выйти из аккаунта");
+                System.out.println("5. Отметить выполнение привычки");
+                System.out.println("6. Выйти из аккаунта");
                 System.out.print("Выберите действие: ");
                 String choice = scanner.nextLine();
                 switch (choice) {
@@ -57,6 +60,9 @@ public class HabitTrackerApp {
                         habitService.viewHabits();
                         break;
                     case "5":
+                        markHabitCompleted(scanner);
+                        break;
+                    case "6":
                         currentUser = null;
                         habitService = null;
                         System.out.println("Вы вышли из аккаунта.");
@@ -116,6 +122,13 @@ public class HabitTrackerApp {
         System.out.print("Введите ID привычки, которую хотите удалить: ");
         Long habitId = Long.valueOf(scanner.nextLine());
         habitService.deleteHabit(habitId);
+    }
+
+    private static void markHabitCompleted(Scanner scanner) {
+        System.out.print("Введите ID привычки, которую хотите отметить выполненной: ");
+        Long habitId = Long.valueOf(scanner.nextLine());
+        LocalDate today = LocalDate.now();
+        habitService.markHabitAsCompleted(habitId, today);
     }
 }
 
