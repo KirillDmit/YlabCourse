@@ -56,6 +56,21 @@ public class HabitService {
         }
     }
 
+    public void generateHabitReport(Long habitId, LocalDate startDate, LocalDate endDate) {
+        Habit habit = currentUser.findHabitById(habitId);
+        if (habit != null) {
+            int currentStreak = habit.getCurrentStreak();
+            double completionPercentage = habit.getCompletionPercentage(startDate, endDate);
+
+            System.out.println("Отчет по привычке: " + habit.getTitle());
+            System.out.println("Текущая серия выполнения (streak): " + currentStreak);
+            System.out.printf("Процент выполнения с %s по %s: %.2f%%%n",
+                    startDate, endDate, completionPercentage);
+        } else {
+            System.out.println("Привычка не найдена.");
+        }
+    }
+
     private Long generateHabitId() {
         return System.currentTimeMillis();
     }

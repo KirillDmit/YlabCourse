@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,24 @@ public class Habit {
 
     public Set<LocalDate> getCompletionDates() {
         return completionDates;
+    }
+
+    public int getCurrentStreak() {
+        int streak = 0;
+        LocalDate today = LocalDate.now();
+
+        while (completionDates.contains(today.minusDays(streak))) {
+            streak++;
+        }
+        return streak;
+    }
+
+    public double getCompletionPercentage(LocalDate startDate, LocalDate endDate) {
+        long totalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        long completedDays = completionDates.stream()
+                .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
+                .count();
+        return (double) completedDays / totalDays * 100;
     }
 
     public Long getId() {

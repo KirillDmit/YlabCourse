@@ -43,7 +43,8 @@ public class HabitTrackerApp {
                 System.out.println("3. Удалить привычку");
                 System.out.println("4. Просмотреть привычки");
                 System.out.println("5. Отметить выполнение привычки");
-                System.out.println("6. Выйти из аккаунта");
+                System.out.println("6. Сгенерировать отчет по привычке");
+                System.out.println("7. Выйти из аккаунта");
                 System.out.print("Выберите действие: ");
                 String choice = scanner.nextLine();
                 switch (choice) {
@@ -63,6 +64,9 @@ public class HabitTrackerApp {
                         markHabitCompleted(scanner);
                         break;
                     case "6":
+                        generateHabitReport(scanner);
+                        break;
+                    case "7":
                         currentUser = null;
                         habitService = null;
                         System.out.println("Вы вышли из аккаунта.");
@@ -129,6 +133,17 @@ public class HabitTrackerApp {
         Long habitId = Long.valueOf(scanner.nextLine());
         LocalDate today = LocalDate.now();
         habitService.markHabitAsCompleted(habitId, today);
+    }
+
+    private static void generateHabitReport(Scanner scanner) {
+        System.out.print("Введите ID привычки для отчета: ");
+        Long habitId = Long.valueOf(scanner.nextLine());
+        System.out.print("Введите начальную дату (YYYY-MM-DD): ");
+        LocalDate startDate = LocalDate.parse(scanner.nextLine());
+        System.out.print("Введите конечную дату (YYYY-MM-DD): ");
+        LocalDate endDate = LocalDate.parse(scanner.nextLine());
+
+        habitService.generateHabitReport(habitId, startDate, endDate);
     }
 }
 
