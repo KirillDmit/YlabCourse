@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.entity.User;
 import org.example.repository.UserStorage;
+import org.example.service.AdminService;
 import org.example.service.AuthService;
 import org.example.service.HabitService;
 
@@ -13,14 +14,16 @@ public class HabitTrackerApp {
     private static AuthService authService = new AuthService(userStorage);
     private static User currentUser = null;
     private static HabitService habitService = null;
+    private static AdminService adminService = null;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            if (currentUser == null) {
+            if (currentUser == null && adminService == null) {
                 System.out.println("1. Регистрация");
                 System.out.println("2. Вход");
-                System.out.println("3. Выход");
+                System.out.println("3. Вход как администратор");
+                System.out.println("4. Выход");
                 System.out.print("Выберите действие: ");
                 String choice = scanner.nextLine();
                 switch (choice) {
@@ -31,9 +34,46 @@ public class HabitTrackerApp {
                         login(scanner);
                         break;
                     case "3":
+                        adminLogin(scanner);
+                        break;
+                    case "4":
                         System.out.println("До свидания!");
                         scanner.close();
                         return;
+                    default:
+                        System.out.println("Неверный выбор. Попробуйте снова.");
+                }
+            } else if (adminService != null) {
+                System.out.println("1. Просмотреть всех пользователей и их привычки");
+                System.out.println("2. Заблокировать пользователя");
+                System.out.println("3. Разблокировать пользователя");
+                System.out.println("4. Удалить пользователя");
+                System.out.println("5. Просмотреть детальную информацию о пользователе");
+                System.out.println("6. Выйти из админ-аккаунта");
+                System.out.print("Выберите действие: ");
+                String choice = scanner.nextLine();
+                switch (choice) {
+                    case "1":
+                        System.out.print("Показывать заблокированных пользователей? (да/нет): ");
+                        boolean showBlockedUsers = scanner.nextLine().equalsIgnoreCase("да");
+                        adminService.viewAllUsersAndHabits(showBlockedUsers);
+                        break;
+                    case "2":
+                        blockUser(scanner);
+                        break;
+                    case "3":
+                        unblockUser(scanner);
+                        break;
+                    case "4":
+                        deleteUser(scanner);
+                        break;
+                    case "5":
+                        viewUserDetails(scanner);
+                        break;
+                    case "6":
+                        adminService = null;
+                        System.out.println("Вы вышли из админ-аккаунта.");
+                        break;
                     default:
                         System.out.println("Неверный выбор. Попробуйте снова.");
                 }
@@ -144,6 +184,45 @@ public class HabitTrackerApp {
         LocalDate endDate = LocalDate.parse(scanner.nextLine());
 
         habitService.generateHabitReport(habitId, startDate, endDate);
+    }
+
+    private static void adminLogin(Scanner scanner) {
+        System.out.print("Введите email администратора: ");
+        String email = scanner.nextLine();
+        System.out.print("Введите пароль администратора: ");
+        String password = scanner.nextLine();
+
+        // Проверка прав администратора (для простоты логин может быть захардкожен)
+        if ("admin@example.com".equals(email) && "adminpassword".equals(password)) {
+            adminService = new AdminService(userStorage);
+            System.out.println("Вы вошли как администратор.");
+        } else {
+            System.out.println("Неверный email или пароль.");
+        }
+    }
+
+    private static void blockUser(Scanner scanner) {
+        System.out.print("Введите email пользователя для блокировки: ");
+        String email = scanner.nextLine();
+        adminService.blockUser(email);
+    }
+
+    private static void unblockUser(Scanner scanner) {
+        System.out.print("Введите email пользователя для разблокировки: ");
+        String email = scanner.nextLine();
+        adminService.unblockUser(email);
+    }
+
+    private static void deleteUser(Scanner scanner) {
+        System.out.print("Введите email пользователя для удаления: ");
+        String email = scanner.nextLine();
+        adminService.deleteUser(email);
+    }
+
+    private static void viewUserDetails(Scanner scanner) {
+        System.out.print("Введите email пользователя для просмотра информации: ");
+        String email = scanner.nextLine();
+        adminService.viewUserDetails(email);
     }
 }
 
