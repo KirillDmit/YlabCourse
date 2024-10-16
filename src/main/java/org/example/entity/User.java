@@ -9,6 +9,7 @@ public class User {
     private String password;
     private String name;
     private List<Habit> habits;
+    private boolean isBlocked;
 
     public User(Long id, String email, String password, String name) {
         this.id = id;
@@ -16,6 +17,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.habits = new ArrayList<>();
+        this.isBlocked = false;
     }
 
     public List<Habit> getHabits() {
@@ -53,6 +55,14 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
     public void setId(Long id) {
